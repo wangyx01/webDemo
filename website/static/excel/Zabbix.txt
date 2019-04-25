@@ -1,0 +1,14 @@
+¾G¦{
+    ip:http://10.195.227.21
+    ½ã¸¹¡Gadmin
+    ±K½X¡Gzabbix
+
+Æ[Äi¡G
+    ip:http://10.172.111.69
+    ½ã¸¹¡Gadmin
+    ±K½X¡GO0@Google...69
+
+¤Ó­ì¡G
+    ip:http://10.76.17.41
+    ½ã¸¹¡GAdmin
+    ±K½X¡Gdpbg123.
