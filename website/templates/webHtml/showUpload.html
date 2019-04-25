@@ -53,6 +53,20 @@
                                 </td>
                             </tr>
                         </table>
+                        <table  width='100%' class='table table-striped table-bordered table-hover' id='CityTable'>
+                            <thead align='center'>
+                                <tr>
+                                    <td>
+                                        <input type='checkbox' name='user' id='user' onclick='qsel(this)'>
+                                    </td>
+                                    <td>ID</td>
+                                    <td>中文全稱</td>
+                                    <td>英文簡寫</td>
+                                </tr>
+                            </thead>
+                            <tbody align='center' id='cityTableBody'>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -60,73 +74,28 @@
     </div>
     {% include "public/foot.html" %}
     <script>
-    /*網頁打開,生成表格,ajax異步加載數據*/
-    $(document).ready(function() {
-        $.ajax({
-            url: "../getAllData/",
-            type: "get",
-            dataType: "json",
-            success: function (res){
-                if(res.status){
-                    tableHtml = "<table width='100%' class='table table-striped table-bordered table-hover' id='dataTables-example'>" +
-                    "<thead align='center'>"+
-                    "<tr>"+
-                    "<td>"+"<input type='checkbox' name='user' id='user' onclick='qsel(this)'>"+"</td>"+
-                    "<td>"+'ID'+"</td>"+
-                    "<td>"+'員工姓名'+"</td>"+
-                    "<td>"+'工號'+"</td>"+
-                    "<td>"+'員工名'+"</td>"+
-                    "<td>"+'員工姓'+"</td>"+
-                    "<td>"+'員工部門'+"</td>"+
-                    "<td>"+'添加時間'+"</td>"+
-                    "<td>"+'添加人'+"</td>"+
-                    "</tr>"+
-                    "</thead>"+
-                    "<tbody align='center'>";
-                    for (var i = 0; i < res.message.length; i++) {
-                        tableHtml = tableHtml +
-                                    "<tr>" +
-                                    "<td align='center'>" + "<input type='checkbox' name='userlist'>" + "</td>";
-                                    for(j=0;j<res.message[i].length;j++){
-                                        tableHtml = tableHtml + "<td>" + res.message[i][j] + "</td>"
-                                    }
-                        tableHtml = tableHtml + "</tr>";
-                    }
-                    tableHtml = tableHtml + "</tbody>" + "</table>";
-                    $("#DTable").append(tableHtml);
-                    /*將樣式封裝進方法中，直接調用*/
-                    putCss();
-                    /*將表內修改添加進表格中*/
-                    clickChange();
-                }else{
-                    layer.msg(data.message, {icon: 2});
-                }
-            }
-        });
-    });
 
     <!--表格樣式修改-->
     function putCss(){
-        //對表格樣式進行操作
-        $('#dataTables-example').DataTable({
+        $('#CityTable').DataTable({
             // bInfo:false,     //啟用或禁用表格信息顯示
             // bPaginate:false, //啟用或禁用分頁
             // bFilter:false,//啟用或禁用搜索功能
-            responsive: true,
-            iDisplayLength:100,//設置每頁顯示的數據條數
             // bLengthChange:false,//允許最終用戶從選擇菜單中選擇格式化頁面的大小
-            bSort:false,     //啟用或禁用列的排序
             // sScrollX:'100%',//啟用水平滾動,啟用滾輪會默認不分頁
-            sScrollY:'300px',//啟用垂直滾動，啟用滾動會默認不分頁
-            bProcessing:true,//使用分頁時在單個頁面上顯示的行數
-            bAutoWidth:false,//啟用或禁用自動列寬計算
             // aaSorting:[
             //    [1,"asc"]
             // ],           //啟用排序時,按照指定列排序
+            responsive: true,
+            iDisplayLength:100,//設置每頁顯示的數據條數
+            bSort:false,     //啟用或禁用列的排序
+            sScrollY:'300px',//啟用垂直滾動，啟用滾動會默認不分頁
+            bProcessing:true,//使用分頁時在單個頁面上顯示的行數
+            bAutoWidth:false,//啟用或禁用自動列寬計算
             lengthMenu:[100,200,500],//設置格式化頁面的大小
             oLanguage:{
                sLengthMenu:'每頁顯示_MENU_條記錄',
-               sZeroRecords:'抱歉，沒有找到',
+               sZeroRecords:'沒有檢索到數據',
                sInfo:'從_START_到_END_/共_TOTAL_條數據',
                sInfoEmpty:'沒有數據',
                sInfoFiltered:"(從_MAX_條數據中檢索)",
@@ -136,10 +105,39 @@
                    sNext:'後一頁',
                    sLast:'尾頁'
                },
-               sZeroRecords:'沒有檢索到數據'
-           }              //國際化
+           }  //國際化
         });
     }
+
+    /*網頁打開,生成表格,ajax異步加載數據*/
+    $(document).ready(function() {
+        $.ajax({
+            url: "../getAllCity/",
+            type: "get",
+            dataType: "json",
+            success: function (res){
+                if(res.status){
+                    tableHtml = "";
+                    for (var i = 0; i < res.message.length; i++) {
+                        tableHtml = tableHtml +
+                                    "<tr>" +
+                                    "<td align='center'>" + "<input type='checkbox' name='userlist'>" + "</td>";
+                                    for(j=0;j<res.message[i].length;j++){
+                                        tableHtml = tableHtml + "<td>" + res.message[i][j] + "</td>"
+                                    }
+                        tableHtml = tableHtml + "</tr>";
+                    }
+                    $("#cityTableBody").append(tableHtml);
+                    /*將表內修改添加進表格中*/
+                    clickChange();
+                    putCss();
+                }else{
+                    layer.msg(res.message, {icon: 2});
+                    putCss();
+                }
+            }
+        });
+    });
 
     <!--添加一欄位-->
     function addBody(){
@@ -150,13 +148,8 @@
         "<td>"+"<input type='text' style='border: none;width:100%' disabled>"+"</td>"+ //disabled保證此欄不被選擇，因為ID為自增長
         "<td>"+"<input type='text' style='border: none;width:100%' onblur='addOneRow(this)'>"+"</td>"+
         "<td>"+"<input type='text' style='border: none;width:100%' onblur='addOneRow(this)'>"+"</td>"+
-        "<td>"+"<input type='text' style='border: none;width:100%' onblur='addOneRow(this)'>"+"</td>"+
-        "<td>"+"<input type='text' style='border: none;width:100%' onblur='addOneRow(this)'>"+"</td>"+
-        "<td>"+"<input type='text' style='border: none;width:100%' onblur='addOneRow(this)'>"+"</td>"+
-        "<td>"+"<input type='text' style='border: none;width:100%' onblur='addOneRow(this)'>"+"</td>"+
-        "<td>"+"<input type='text' style='border: none;width:100%' onblur='addOneRow(this)'>"+"</td>"+
         "</tr>";
-        $("#dataTables-example").find('tbody').append(trHtml);
+        $("#CityTable").find('#cityTableBody').append(trHtml);
         /*定位到新添加的欄位*/
         document.getElementById('foot').scrollIntoView();
     }
@@ -169,19 +162,11 @@
             var val = $(obj).parent().parent().find('input')[i].value.trim();
             data.push(val);
         }
-        if(data[0] == ""){
-            layer.msg('員工姓名不能為空！', {icon: 2});
-        }else if(data[1] == ""){
-            layer.msg('員工工號不能為空！', {icon: 2});
-        }else if(data[4] == ""){
-            layer.msg('員工部門不能為空！', {icon: 2});
-        }else if(data[6] == ""){
-            layer.msg('添加人不能為空！', {icon: 2});
-        }else{
+        if(data[0]!="" && data[1]!=""){
             layer.confirm('確認添加？',function(index) {
                 var json1 = JSON.stringify(data);
                 $.ajax({
-                    url:"../addOneData/",
+                    url:"../addCity/",
                     data:{data1:json1},
                     type:"POST",
                     dataType:"json",
@@ -200,6 +185,8 @@
                     }
                 });
             })
+        }else{
+            layer.msg('中文全稱或英文簡寫不能為空！', {icon: 2});
         }
     }
 
@@ -236,7 +223,7 @@
     }
 
     /*表內全欄位修改*/
-    /*$("#dataTables-example tbody td").click(function(){
+    /*$("#CityTable tbody td").click(function(){
             $(this).editable({
                 type:"text",
                 title:$(this).text(),
@@ -271,7 +258,7 @@
             });
             idList = JSON.stringify(idList);
             $.ajax({
-                url:"../deleteData/",
+                url:"../deleteCity/",
                 data:{idList:idList},
                 type:"POST",
                 dataType:"json",
@@ -306,7 +293,7 @@
 
     <!--獲取當前頁面上表格內的所有數據-->
     function getPage(){
-        var tab = document.getElementById("dataTables-example");
+        var tab = document.getElementById("CityTable");
         var rows = tab.rows;
         var list1 = [];
         for(var i =1;i<rows.length;i++){
