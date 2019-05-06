@@ -1,7 +1,5 @@
 from django.db import models
-from django.db.models import (
-    IntegerField, TextField, CharField, ForeignKey
-)
+from django.db.models import CharField, ForeignKey, IntegerField, TextField
 
 
 class Cities(models.Model):

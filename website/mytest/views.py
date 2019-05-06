@@ -1,6 +1,8 @@
-from django.shortcuts import render
 import json
+
 from django.http import HttpResponse
+from django.shortcuts import render
+
 from .models import Cities
 
 
@@ -41,7 +43,7 @@ def addCity(request):
     return HttpResponse(json.dumps(ret))
 
 
-#刪除數據
+# 刪除數據
 def deleteCity(request):
     ret = {"status": False, "message": ""}
     res = request.POST.get("idList")
