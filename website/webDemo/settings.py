@@ -26,7 +26,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(
 SECRET_KEY = '^ya=1h#np!(z%06xu98eg%-6cqkau)@jp5eq0@+7uj#h48qjt='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['192.168.47.148']
 
