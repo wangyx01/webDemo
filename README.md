@@ -1,6 +1,7 @@
 # webDemo
 Django web demo
 # uwsgi.ini
+```
 [uwsgi]
 socket = :8000
 chdir = /root/Single/webDemo/website    --manage.py的上级目录
@@ -14,7 +15,9 @@ buffer-size = 30000
 pidfile = /var/run/uwsgi.pid
 daemonize = /var/log/uwsgi.log
 harakiri = 60
+```
 # /etc/nginx/conf.d/https.conf
+```
 upstream django {
     server 127.0.0.1:8000;
 }
@@ -34,3 +37,4 @@ server {
         include     /etc/nginx/uwsgi_params;
     }
 }
+```
