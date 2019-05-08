@@ -4,7 +4,7 @@ Django web demo
 ```
 [uwsgi]
 socket = :8000
-chdir = /root/Single/webDemo/website    --manage.py的上级目录
+chdir = /home/webDemo/website    --manage.py的上级目录
 wsgi-file = webDemo/wsgi.py
 processes = 2
 threads = 4
@@ -29,7 +29,7 @@ server {
     client_max_body_size 75M;
  
     location /static {
-        alias /root/Single/webDemo/website/static;
+        alias /home/webDemo/website/static;
     }
  
     location / {
